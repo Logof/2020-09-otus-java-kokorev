@@ -42,7 +42,7 @@ public class testRun {
     }
 
     public void testing() throws testStarterException {
-        getClassMetods();
+        findClassMetods();
         getObject();
         runTestResult(beforeMethods);
         runTestResult(testMethods);
@@ -50,19 +50,16 @@ public class testRun {
     }
 
 
-    private void getClassMetods() {
+    private void findClassMetods() {
         Arrays.stream(testingClass.getMethods()).forEach(method -> {
                     if (method.isAnnotationPresent(Before.class)) {
                         beforeMethods.add(method);
-                        //System.out.println("Add BEFORE " + method.getName());
                     }
                     if (method.isAnnotationPresent(Test.class)) {
                         testMethods.add(method);
-                        //System.out.println("Add TEST " + method.getName());
                     }
                     if (method.isAnnotationPresent(After.class)) {
                         afterMethods.add(method);
-                        //System.out.println("Add AFTER " + method.getName());
                     }
                 }
         );
