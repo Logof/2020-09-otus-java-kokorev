@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.otus'
+version 'unspecified'
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
