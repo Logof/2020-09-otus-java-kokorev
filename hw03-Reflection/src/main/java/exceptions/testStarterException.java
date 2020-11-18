@@ -1,6 +1,6 @@
 package exceptions;
 
-public class testStarterException extends Exception {
+public class testStarterException extends RuntimeException {
     public testStarterException(String message) {
         super(message);
     }
