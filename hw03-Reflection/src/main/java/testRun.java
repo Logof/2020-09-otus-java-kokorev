@@ -14,7 +14,10 @@ public class testRun {
     private List<Method> beforeMethods;
     private List<Method> testMethods;
     private List<Method> afterMethods;
+
     private int currentMethod = 0;
+    private int succesCount = 0;
+    private int errorCount = 0;
 
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_GREEN = "\u001B[32m";
@@ -43,10 +46,23 @@ public class testRun {
 
     public void testing() throws testStarterException {
         getClassMetods();
-        getObject();
-        runTestResult(beforeMethods);
-        runTestResult(testMethods);
-        runTestResult(afterMethods);
+        for (Method method : testMethods) {
+            currentMethod = 0;
+            succesCount = 0;
+            errorCount = 0;
+
+            System.out.println("=====================================");
+            getObject();
+
+            List<Method> test = new ArrayList<>();
+            test.add(method);
+
+            runTestResult(beforeMethods);
+            runTestResult(test);
+            runTestResult(afterMethods);
+
+            System.out.println(String.format("Было запущено %d тестов. Успешно пройдено - %d. Завершилось с ошибками - %d", currentMethod, succesCount, errorCount));
+        }
     }
 
 
@@ -94,21 +110,21 @@ public class testRun {
     }
 
     private void runTestResult(List<Method> methods) throws testStarterException {
-        int failedTests = 0;
-
-        for (Method method : methods) {
+       for (Method method : methods) {
             System.out.println(String.format("#%d. Запускаем тест: %s", ++currentMethod, method.getName()));
 
             try {
                 runTestMethod(method);
                 System.out.println(String.format("%sSUCCESS%s", ANSI_GREEN, ANSI_RESET));
 
+                succesCount ++;
+
             } catch (testStarterException e) {
-                failedTests++;
+
                 System.out.println(e.getMessage());
+
+                errorCount ++;
             }
         }
-        System.out.println(String.format("Было запущено %d тестов. Успешно пройдено - %d. Завершилось с ошибками - %d", afterMethods.size(), (afterMethods.size() - failedTests), failedTests));
-
     }
 }
