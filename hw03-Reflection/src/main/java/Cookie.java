@@ -1,14 +1,14 @@
 import annotation.After;
 import annotation.Before;
 import annotation.Test;
-import exceptions.cookieExceptions;
+import exceptions.CookieExceptions;
 
-public class cookie {
+public class Cookie {
     private boolean makeCooked; // Признак, что печенье готовиться
     private int countCookie;     // Сколько печенек приготовлено
     private int checkCount;
 
-    public cookie(){
+    public Cookie(){
         countCookie = 0;
         makeCooked = false;
     }
@@ -24,7 +24,7 @@ public class cookie {
     }
 
     @Test
-    public void checkCooking() throws cookieExceptions {
+    public void checkCooking() throws CookieExceptions {
         if (checkCount == 0) {
             makeCooked = false;
             countCookie += 1;
@@ -36,19 +36,19 @@ public class cookie {
         //
     }
     @Test
-    public void grabCooking() throws cookieExceptions {
+    public void grabCooking() throws CookieExceptions {
         if (makeCooked) {
-            throw new cookieExceptions("Печенье еще не готово. Нужно подождать");
+            throw new CookieExceptions("Печенье еще не готово. Нужно подождать");
         }
     }
 
     @After
-    public void eatCookie() throws cookieExceptions {
+    public void eatCookie() throws CookieExceptions {
         if (countCookie <= 0 & !makeCooked) {
-            throw new cookieExceptions("Печенье закончилось. Нужно приготовить новые");
+            throw new CookieExceptions("Печенье закончилось. Нужно приготовить новые");
         }
         if (makeCooked) {
-            throw new cookieExceptions("Печенье еше готовиться. Нужно подождать");
+            throw new CookieExceptions("Печенье еше готовиться. Нужно подождать");
         }
         countCookie -= 1;
         System.out.println("Вы съели одну печеньку");

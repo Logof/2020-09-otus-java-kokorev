@@ -1,7 +1,7 @@
 import annotation.After;
 import annotation.Before;
 import annotation.Test;
-import exceptions.testStarterException;
+import exceptions.TestStarterException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class testRun {
+public class TestRun {
     private List<Method> beforeMethods;
     private List<Method> testMethods;
     private List<Method> afterMethods;
@@ -28,8 +28,8 @@ public class testRun {
 
     public static void main(String[] args) {
         try {
-            new testRun(cookie.class).testing();
-        } catch (testStarterException e) {
+            new TestRun(Cookie.class).testing();
+        } catch (TestStarterException e) {
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -37,14 +37,14 @@ public class testRun {
         }
     }
 
-    public testRun(Class testingClass) {
+    public TestRun(Class testingClass) {
         this.testingClass = testingClass;
         beforeMethods = new ArrayList<>();
         testMethods = new ArrayList<>();
         afterMethods = new ArrayList<>();
     }
 
-    public void testing() throws testStarterException {
+    public void testing() throws TestStarterException {
         getClassMetods();
         for (Method method : testMethods) {
             currentMethod = 0;
@@ -81,35 +81,35 @@ public class testRun {
         );
     }
 
-    private void runTestMethod(Method method ) throws testStarterException {
+    private void runTestMethod(Method method ) throws TestStarterException {
         try {
             method.invoke(testObject);
         } catch (InvocationTargetException e) {
-            throw new testStarterException(String.format("%sFAIL%s: Метод '%s' упал в ошибку: %s", ANSI_RED, ANSI_RESET, method.getName(), e.getTargetException()));
+            throw new TestStarterException(String.format("%sFAIL%s: Метод '%s' упал в ошибку: %s", ANSI_RED, ANSI_RESET, method.getName(), e.getTargetException()));
         }
         catch (Exception e) {
-            throw new testStarterException(String.format("%sFAIL%s: Метод '%s' упал в ошибку", ANSI_RED, ANSI_RESET, method.getName()));
+            throw new TestStarterException(String.format("%sFAIL%s: Метод '%s' упал в ошибку", ANSI_RED, ANSI_RESET, method.getName()));
         }
     }
 
-    private void getObject() throws testStarterException {
+    private void getObject() throws TestStarterException {
         Constructor<Object> contructor = null;
         try {
             contructor = testingClass.getConstructor();
         } catch (Exception e) {
-            throw new testStarterException("Тестовый класс должен иметь конструктор без каких-либо аргументов");
+            throw new TestStarterException("Тестовый класс должен иметь конструктор без каких-либо аргументов");
         }
 
         testObject = null;
         try {
             testObject = testingClass.cast(contructor.newInstance());
         } catch (Exception e) {
-            throw new testStarterException("InstantiationException");
+            throw new TestStarterException("InstantiationException");
         }
 
     }
 
-    private void runTestResult(List<Method> methods) throws testStarterException {
+    private void runTestResult(List<Method> methods) throws TestStarterException {
        for (Method method : methods) {
             System.out.println(String.format("#%d. Запускаем тест: %s", ++currentMethod, method.getName()));
 
@@ -119,7 +119,7 @@ public class testRun {
 
                 succesCount ++;
 
-            } catch (testStarterException e) {
+            } catch (TestStarterException e) {
 
                 System.out.println(e.getMessage());
 
